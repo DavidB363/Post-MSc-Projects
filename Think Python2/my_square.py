@@ -1,0 +1,17 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# In[1]:
+
+
+# My_square function Python file.
+
+def number_squared(x):
+    return (x*x)
+
+
+# In[ ]:
+
+
+
+
