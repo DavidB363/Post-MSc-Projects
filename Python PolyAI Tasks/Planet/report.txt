@@ -1,0 +1,54 @@
+Program Planet notes
+
+The program produced uses an exhaustive procedure that produces the optimal solutions, but has the disadvantage 
+that the amount of processing time required to solve the problem increases substantially with the size of the
+problem. For example:
+
+10 stations takes 2 seconds
+11 stations takes 27 seconds
+12 staions takes 180 seconds
+
+It must be noted that I could not find the list of space teleportation coordinates at http://www.space-net.spc
+as specified in the question, so decided to write a program to generate the data which was then written to the 
+file called input.txt. The number of space stations I used while testing the program was 6, so I have used this 
+in the final submission.
+
+The program consists of a collection of functions:
+
+permutation_new(lst, n) - this takes in a list and generates a list of all permutations of a selection of n
+numbers from the list.This corresponds to different paths that the space traveller can take, and to the number 
+of teloportations on the path.
+
+generate_transition_list(perm_list) - this uses the list of permutations that have been generated and 
+produces a list of tuples with each tuple corresponding to pair of space station indices.
+
+I thought it would be a good idea to calculate all of the possible distances between space stations 
+(num_stations*(num_stations-1)/2), and to store them in a dictionary relating each tuple key to a 
+distance value, and then to create a sorted dictionary with descending values of distance.
+
+In order to find the optimum solutions, the following agorithm was followed (in principle):
+
+for number of teleportations = 1 to (number of space stations-1):
+	calculate all possible paths from Earth to Zearth
+	calculate the best path using the sorted dictionary
+	if there are new paths that are better than the old paths:
+		save the minimum distance and the corresponding paths
+print out the final minimum distance
+
+Note that when a transition path is processed e.g. [(0,1),(1,4),(4,6)] then the sorted dictionary is iterated 
+through. Once a tuple in the dictionary is found to be in the transition path, one can be be assured that the
+tuple has a maximum distance value associated with it for the path (or is at least equal to another 'tuple's 
+distance'). This makes for a more efficient procedure for tackling the problem - but obviously there are many 
+permutations to calculate.
+
+Since 'Sum of nCr is 2^n' (the sum of the combinatorial coefficients), then
+'Sum of nPr' will be greater than this. The algorithm implemeted is therefore of exponential complexity.
+
+Improvements:
+1. The next permutation produced is mostly similar to the last one, therefore distances for the 
+appropriate changes could create a slightly more efficient algorithm.
+2. Instead of an exhaustive search, a more greedy algorithm could be developed.
+
+P.S. Unfortunately, I didn't have time to look at the Pizzeria problem.
+
+
