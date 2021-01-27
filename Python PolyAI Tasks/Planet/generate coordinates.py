@@ -16,7 +16,7 @@
 # E.g.
 # numstations = 10 : 2 seconds
 # numstations = 11 : 27 seconds
-# numstations = 10 : 180 seconds
+# numstations = 12 : 180 seconds
 
 
 num_stations = 6 # The number of teleportation stations.
