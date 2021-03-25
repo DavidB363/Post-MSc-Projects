@@ -673,7 +673,7 @@ under_10 = [x for x in range(10)]
 print('under_10: '+ str(under_10))
 
 
-# In[39]:
+# In[38]:
 
 
 # Get squared values.
@@ -681,7 +681,7 @@ squares = [i**2 for i in under_10]
 print('squares: ' + str(squares))
 
 
-# In[41]:
+# In[39]:
 
 
 # Get odd numbers using mod (%).
@@ -689,7 +689,7 @@ odd_numbers = [i for i in under_10 if i%2 == 1]
 print('odd_numbers: ' + str(odd_numbers))
 
 
-# In[45]:
+# In[40]:
 
 
 # Get multiples of 10.
@@ -697,7 +697,7 @@ multiple_10 = [10*x for x in range(10)]
 print('multiple_10: ' + str(multiple_10))
 
 
-# In[50]:
+# In[41]:
 
 
 # Get all numbers from a string.
@@ -707,7 +707,7 @@ print('numbers_only: ' + str(numbers_only)) # Prints the numbers in a  list.
 print('numbers_only: ', ''.join(numbers_only)) # Prints the numbers as a string
 
 
-# In[58]:
+# In[42]:
 
 
 # Get indices of a list item.
@@ -717,7 +717,7 @@ indices = [ind for ind, val in enumerate(my_list) if val == item]
 print('indices: ', indices)
 
 
-# In[60]:
+# In[43]:
 
 
 # Delete an item from a list.
@@ -734,7 +734,7 @@ print('letters: ', ''.join(letters))
 print('letrs: ', ''.join(letrs))
 
 
-# In[63]:
+# In[44]:
 
 
 # if-else in a list comprehension.
@@ -753,7 +753,7 @@ print('new_list: ' + str(new_list))
 # 2. Use append() to push and item on the stack.
 # 3. Use pop() to remove an item from the stack.
 
-# In[65]:
+# In[45]:
 
 
 my_stack = list()
@@ -765,7 +765,7 @@ my_stack.append(11)
 print(my_stack)
 
 
-# In[66]:
+# In[46]:
 
 
 print(my_stack.pop())
@@ -780,7 +780,7 @@ print(my_stack)
 # # For pop() and peek() Methods, Check Whether the
 # # Stack is Empty to Avoid Exceptions.
 
-# In[100]:
+# In[47]:
 
 
 class Stack:
@@ -810,7 +810,7 @@ class Stack:
 
 # # Test Code for Stack Wrapper Class.
 
-# In[102]:
+# In[48]:
 
 
 st = Stack()
@@ -842,7 +842,7 @@ print('Peek(): ', st.peek())
 # # Python popleft() method used to dequeue an item (remove the front of the Queue - the left hand end).
 # # (See Python documentation for deque).
 
-# In[108]:
+# In[49]:
 
 
 from collections import deque
@@ -861,7 +861,7 @@ print(my_queue)
 
 # # Queue Using a List With a Wrapper Class.
 
-# In[127]:
+# In[50]:
 
 
 class Queue:
@@ -887,7 +887,7 @@ class Queue:
 
 # # Test Code for Queue Wrapper Class.¶
 
-# In[128]:
+# In[51]:
 
 
 my_queue = Queue()
@@ -929,7 +929,7 @@ print('getsize: ', my_queue.getsize())
 # 
 # Private functions: __swap, __floatUp, __bubbleDown and __str__.
 
-# In[115]:
+# In[52]:
 
 
 class MaxHeap:
@@ -990,7 +990,7 @@ class MaxHeap:
 
 # # MaxHeap Test Code.
 
-# In[118]:
+# In[53]:
 
 
 m = MaxHeap([24, 33, 41, 16])
@@ -1003,6 +1003,132 @@ print(m)
 print(m.peek())
 
 
+# # Linked List.
+
+# Attributes:
+# 
+#     root - pointer to the beginning of the list, 
+#     size - number of nodes in the list.
+#     
+# Operations:
+# 
+#     find(data),
+#     add(data),
+#     remove(data),
+#     print_list*().
+
+# # Node Class.
+
+#  Node class has constructor that sets the data passed in, and optionally\
+#  contains a next and previous node.\
+#  The str method gives a string representation for printing.\
+#  Note that prev_node is only used for doubly linked lists.
+
+# In[54]:
+
+
+class Node:
+    
+    def __init__(self, d, n=None, p=None):
+        self.data = d
+        self.next_node = n
+        self.prev_node = p
+        
+    def __str__(self):
+        return('(' + str(self.data) + ')')
+
+
+# # Singly Linked List Class.
+
+# The linked list has two attributes; a root node that defaults to None, and\
+# the number of nodes that defaults to 0.
+# 
+# add() method receives a piece of data, creates a node, sets the root to the new node,\
+# and increments its size.
+# 
+# find() method iterates through the nodes until the data is found. If it finds the data\
+# it will return it, otherwise it returns None
+# 
+# remove() method needs pointers to this_node and next_node. If it finds the data it needs\
+# to check if it is in the root node (prev_node is None) before deciding how to bypass\
+# the deleted node.
+# 
+# print_list() method iterates the list and prints each node.
+
+# In[55]:
+
+
+class LinkedList:
+    
+    def __init__(self, r=None):
+        self.root = r
+        self.size = 0
+        
+        
+    def add(self, d):
+        new_node = Node(d, self.root)
+        self.root = new_node
+        self.size += 1
+        
+    def find(self, d):
+        this_node = self.root
+        while this_node is not None:
+            if this_node.data == d:
+                return d
+            else:
+                this = this.next_node
+        return None
+    
+    def remove(self, d):
+        this_node = self.root
+        prev_node = None # prev_node in Node class is not being used.
+        while this_node is not None:
+            if this_node.data == d:
+                if prev_node is not None: # data is not in the root.
+                    prev_node.next_node = this_node.next_node 
+                else: # data is in the root node.
+                    self.root = prev_node
+                del this_node
+                self.size -= 1  
+                return True
+            else: 
+                prev_node = this_node
+                this_node = this_node.next_node
+        return False
+    
+    def print_list(self):
+        this_node = self.root
+        while this_node is not None:
+            print(this_node, end='->')
+            this_node = this_node.next_node
+        print('None')
+        
+    
+
+
+# # Linked List test code.
+
+# The test code adds nodes to the linked list, prints the list, prints the size,\
+# removes an item, and finds an item.
+
+# In[56]:
+
+
+myList = LinkedList()
+myList.add(8)
+myList.add(12)
+myList.add(6)
+myList.add(7)
+myList.print_list()
+
+print("size="+str(myList.size))
+myList.remove(12)
+print("size="+str(myList.size))
+print(myList.find(7))
+print("size="+str(myList.size))
+print(myList.root)
+
+
 # In[ ]:
 
 
@@ -1021,35 +1147,11 @@ print(m.peek())
 
 
 
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# # Singly Linked List (My Attempt).
+# # Singly Linked List (My Version).
 
 # Note that the data in each node can be quite general.
 
-# In[4]:
+# In[57]:
 
 
 
@@ -1097,15 +1199,15 @@ class Node:
         
     def __str__(self):
         return('Node class:\n' + self.data.__str__())
-        
-        
+
+# Note: A note on pointers.
+# Pointers are variables that store the memory address of other variables or objects.
+# Python does not allow for the definition of pointers explicitly, however, pointers are used implicitly.
+#
 # Note: Types such as list, dictionary, class, and objects, etc in Python behave like pointers.
 # Note: Types such as int, str, float, bool, etc do not behave like a pointer.
 class SinglyLinkedList:
     def __init__(self, r = None):
-        #self.root = r  # CHECK THIS
-        #self.this = r # CHECK THIS
-        #self.next = None # CHECK THIS
         self.root = r
         
     # Add a new node to the head of the linked list.
@@ -1131,7 +1233,7 @@ class SinglyLinkedList:
 
 # # Test Code for the Singly Linked List.
 
-# In[5]:
+# In[58]:
 
 
 d = NumericData(7)
@@ -1151,7 +1253,7 @@ n2 = Node(d2)
 print(n2)
 
 
-# In[6]:
+# In[59]:
 
 
 print('SinglyLinkedList with NumericData:\n')
@@ -1194,147 +1296,400 @@ print('data:')
 print(data)
 
 
-# In[ ]:
+# # Circular Linked List.
+
+# Basically the last node points back to the root node.\
+# New nodes are added after the root node,\\\
+#  (and not before as is the case of the singly linked list).
+
+# In[60]:
 
 
+class Node:
+    
+    def __init__(self, d, n=None, p=None):
+        self.data = d
+        self.next_node = n
+        self.prev_node = p
+        
+    def __str__(self):
+        return('(' + str(self.data) + ')')
+
+class CircularLinkedList:
+    
+    def __init__(self, r=None):
+        self.root = r
+        self.size = 0
+        
+    def add(self, d):
+        if self.size == 0:    
+            self.root = Node(d)
+            self.root.next_node = self.root
+        else:
+            new_node = Node(d, self.root.next_node)
+            self.root.next_node = new_node
+        self.size += 1
+        
+    def find(self, d):
+        this_node = self.root
+        while True:
+            if this_node.data == d:
+                return d
+            elif this_node.next_node == self.root:
+                return False
+            this_node = this_node.next_node
+
+    def remove(self, d):
+        this_node = self.root
+        prev_node = None # prev_node in Node class is not being used.
+        
+        while True:
+            if this_node.data == d:
+                if prev_node is not None: 
+                    prev_node.next_node = this_node.next_node 
+                else: 
+                    while this_node.next_node != self.root:
+                        this_node = this_node.next_node
+                    this_node.next_node = self.root.next_node
+                    self.root = self.root.next_node
+                self.size -= 1  
+                return True # data removed.
+            elif this_node.next_node == self.root:
+                return False # data not found.
+            prev_node = this_node
+            this_node = this_node.next_node
+    
+    def print_list(self):
+        if self.root is None:
+            return
+        this_node = self.root
+        print(this_node, end='->')
+        while this_node.next_node != self.root:
+            this_node = this_node.next_node
+            print(this_node, end='->')
+        print()
+    
 
 
+# # Circular List Test Code.
 
-# In[ ]:
-
-
-
+# In[61]:
 
 
-# In[ ]:
+cll = CircularLinkedList()
+
+for i in [5,1,9,7,8,3,6]:
+    cll.add(i)
+    
+print("size="+str(cll.size))
+cll.remove(3)
+print(cll.find(9))
+print(cll.find(12))
+
+cll.print_list()
+cll.remove(9)
+cll.remove(6)
+print('')
+cll.print_list()
+cll.remove(5)
+print('')
+cll.print_list()
 
 
+# # Doubly Linked List.
+
+# In[62]:
 
 
+class DoublyLinkedList:
+    
+    def __init__(self, r=None):
+        self.root = None
+        self.last = None
+        self.size = 0
+        
+    def add(self, d):
+        if self.size == 0:
+            self.root = Node(d)
+            self.last = self.root
+        else:
+            new_node = Node(d, self.root)
+            self.root.prev_node = new_node
+            self.root = new_node
+        self.size += 1
+        
+    def find(self, d):
+        this_node = self.root
+        while this_node is not None:
+            if this_node.data == d:
+                return d
+            elif this_node.next_node == None:
+                return False
+            else:
+                this_node = this_node.next_node
 
-# In[ ]:
+    def remove(self, d):
+        this_node = self.root
+        while this_node is not None:
+            if this_node.data ==d:
+                if this_node.prev_node is not None:
+                    if this_node.next_node is not None:
+                        this_node.prev_node.next_node = this_node.next_node
+                        this_node.next_node.prev_node = this_node.prev_node
+                    else: # delete the last node.
+                        this_node.prev_node.next_node = None
+                        self.last = this_node.prev_node
+                else: # delete root node.
+                    self.root = this_node.next_node
+                    this_node.next_node.prev_node = self.root
+                self.size -= 1
+                return True
+            else:
+                this_node = this_node.next_node
+        return False # data not found.
+                
+    def print_list(self):
+        if self.root is None:
+            return
+        this_node = self.root
+        print(this_node, end='->')
+        while this_node.next_node is not None:
+            this_node = this_node.next_node
+            print(this_node, end='->')
+        print()                    
+                        
 
 
+# # Doubly Linked List test code.
+
+# In[63]:
 
 
+dll = DoublyLinkedList()
+for i in [7, 6, 9, 2, 5, 8, 4]:
+    dll.add(i)
 
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
+print("size="+str(dll.size))
+dll.print_list()
+dll.remove(5)
+print("size="+str(dll.size))
+dll.print_list()
 
 
-# In[ ]:
+# In[64]:
 
 
+print(dll.find(9))
+print(dll.find(12))
+
+dll.remove(9)
+dll.remove(8)
+
+dll.print_list()
+print(dll.last.prev_node)
 
 
+# # Trees.
 
-# In[ ]:
+# # Binary Search Trees.
 
+# __Binary search trees__ allow each node with up to 2 child nodes.\
+# Each node has a value greater than every node in its left sub-tree.\
+# Each node has a value less than every node in its right sub-tree.
 
+# Binary search tree operations:\
+# __Constructor__ sets three attributes; data, left subtree and right subtree.\
+# __Insert__ inserts a new subtree into its proper location.\
+# __Find__ finds a value. If not found retyrns False.\
+# __Delete__ returns the number of nodes in the tree (excluding None nodes).\
+# __Preorder__ prints a preorder traversal of the tree.\
+# __Postorder__ prints a postorder traversal of the tree.
 
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
+# In[65]:
 
 
 class Tree:
+    
+    def __init__(self, data, left=None, right=None):
+        self.data = data
+        self.left = left
+        self.right = right
+        
+    def insert(self, data):
+        if self.data == data:
+            return False # duplicate data.
+        elif self.data > data:
+            if self.left is not None:
+                return self.left.insert(data)
+            else:
+                self.left = Tree(data)
+                return True
+        else:
+            if self.right is not None:
+                return self.right.insert(data)
+            else:
+                self.right = Tree(data)
+                return True   
+            
+    def find(self, data):
+        if self.data == data:
+            return data
+        elif self.data > data:
+            if self.left is not None:
+                return self.left.find(data)
+            else:
+                return False
+        else:
+            if self.right is not None:
+                return self.right.find(data)
+            else:
+                return False
+            
+    def get_size(self):
+        if self.left is not None and self.right is not None:
+            return 1 + self.left.get_size() + self.right.get_size()
+        elif self.left is not None:
+            return 1 + self.left.get_size()
+        elif self.right is not None:
+            return 1 + self.right.get_size()
+        else:
+            return 1
+        
+    def preorder(self):
+        if self is not None:
+            print(self.data, end=' ')
+            if self.left is not None:
+                self.left.preorder()
+            if self.right is not None:
+                self.right.preorder()   
+                
+    def inorder(self):
+        if self is not None:
+            if self.left is not None:
+                self.left.inorder()
+            print(self.data, end=' ')
+            if self.right is not None:
+                self.right.inorder()   
+        
+
+
+# # Binary Search Tree Test Code.
+
+# In[66]:
+
+
+tree = Tree(7)
+tree.insert(9)
+for i in [3, 5, 1, 5, 6, 9, 13, 7, 15, 2, 12]:
+    tree.insert(i)
+
+for i in range(15):
+    print(tree.find(i), end=' ')   
+print('\n Size =', tree.get_size())
+
+tree.preorder()
+print()
+tree.inorder()
+print()
+
+
+# # Graphs.
+
+# # Graph Implementation Using Adjacency Lists. 
+# Undirected graph.
+
+# # Vertex Class
+# The Verex class has a constructor that sets the name of the vertex\
+# (in this case, just one letter) and creates a new empty set to\
+# store neighbours.\
+# The add_neighbours() method adds the name of a neighbouring vertex to\
+# the neighbours set. This set automatically eliminates duplicates.
+
+# In[67]:
+
+
+class Vertex:
+    def __init__(self, vertex_name):
+        self.name = vertex_name
+        self.neighbours = set()
+        
+    def add_neighbour(self, vertex_name):
+        self.neighbours.add(vertex_name)
+
+
+# # Graph Class.
+# The Graph class uses a dictionary to store vertices in the format, vertex_name:vertex_object.\
+#     
+# Adding a new vertex to the graph, first check that the object passed in is a vertex object, then\
+# check if it already exists in the graph. If bothe checks pass, then add the vertex to the graph's\
+# vertices dictionary.
+# 
+# When adding an edge, two vertex names are received, the vertex names are checked for validity, and\
+# the added to each other's neighbours set.
+# 
+# To print the graph, iterate through the vertices, and print each vertex name (key) followed by\
+# it's sorted neighbours set.
+
+# In[68]:
+
+
+class Graph:
+    
     def __init__(self):
-        pass
-    def addNode(self, val):
-        pass
-
-class Node:
-    def __init__(self):
-        self.value = 0.0
-        self.parentNode = None
-        self.leftNode = None
-        self.rightNode = None
-    def set value(self, val):
-        self.value = val
+        self.vertices = dict()
         
+    def add_vertex(self, vertex):
+        if isinstance(vertex, Vertex) and vertex.name not in self.vertices:
+            self.vertices[vertex.name] = vertex
+            return True
+        else:
+            return False
         
+    def add_edge(self, v1_name, v2_name):
+        if v1_name in self.vertices and v2_name in self.vertices:
+            self.vertices[v1_name].add_neighbour(v2_name)
+            self.vertices[v2_name].add_neighbour(v1_name)
+            return True
+        else:
+            return False
+        
+    def print_graph(self):
+        for key in sorted(list(self.vertices.keys())):
+            print(key, sorted(list(self.vertices[key].neighbours)))
         
 
 
-# In[ ]:
+# # Test Code.
+# 
+# A new Graph object is created. A vertex named A is created and added to the graph.\
+# A vertex named B is then added to the graph. Vertices named A to K are then added to\
+# the graph. Note that the add_vertex method checks for duplicates, so that A and B\
+# are not added twice.
+
+# In[69]:
 
 
+g = Graph()
+a = Vertex('A')
+g.add_vertex(a)
+g.add_vertex(Vertex('B'))
+for i in range(ord('A'), ord('K')):
+    g.add_vertex(Vertex(chr(i)))
 
 
+# An edge consists of two vertex names. Here we iterate through a list of edges and\
+# add each to the graph.
+# 
+# The print_graph() method doesn't give very good visualisation of the graph, but it\
+# does show the neighbours of the vertex.
 
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
+# In[70]:
 
 
-
-
-# In[107]:
-
-
-len([])
-
-
-# In[126]:
-
-
-x=deque()
-x.append(4)
-print(x)
-#x.popleft()
-print(x)
-print(x == deque([]))
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
-
-# In[56]:
-
-
-4 != 5
-
-
-# In[44]:
-
-
-type(5.7)
-
-
-# In[48]:
-
-
-v = ''.join(numbers_only)
-print(v)
-print(type(v))
+edges = ['AB', 'AE', 'BF', 'CG', 'DE', 'DH', 'EH', 'FG', 'FI', 'FJ', 'GJ', 'IH']
+for edge in edges:
+    g.add_edge(edge[0], edge[1])
+g.print_graph()
 
 
 # In[ ]:
