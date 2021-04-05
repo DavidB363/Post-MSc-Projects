@@ -4,12 +4,6 @@
 # # Pre-Modelling: Data Preprocessing and Feature Exploration
 # # in Python.
 
-# In[ ]:
-
-
-
-
-
 #  **Goal.**
 #  - Goal:
 #      - Pre-modelling/modelling is 80%/20% of work.
@@ -150,7 +144,6 @@ df.isnull().sum(axis = 0).sort_values(ascending=False).head()
 
 
 # In[6]:
-
 
 
 # Take a look at the variable 'income'.
@@ -313,44 +306,10 @@ X.isnull().sum(axis = 0).sort_values(ascending=False).head()
 # In[20]:
 
 
-# Insert 107 missing values into 'fnlwgt',,
-# 57 missing values in 'education_num',
-# and 48 missing values in 'age'.
-#import random
-
-#random.seed(12)
-
-#num_rows = X.shape[0]
-#print('num_rows: ', num_rows)
-
-#def gen_rand_list(limit, num_rows):
-#    RandomListOfIntegers = [random.randrange(num_rows) for iter in range(limit)]
-#    return RandomListOfIntegers
-
-#fnlwgt_nan_indices = gen_rand_list(107, num_rows)
-#ed_num_nan_indices = gen_rand_list(57, num_rows)
-#age_nan_indices = gen_rand_list(48, num_rows)
-
-#X.loc[fnlwgt_nan_indices, 'fnlwgt'] = np.nan
-#X.loc[ed_num_nan_indices, 'education_num'] = np.nan
-#X.loc[age_nan_indices, 'age'] = np.nan
-
-
-# In[21]:
-
-
-# How much data is missing now?
-#X.isnull().sum(axis = 0).sort_values(ascending=False).head()
-
-
-# In[22]:
-
-
 # Impute missing values using SimpleImputer in sklearn.impute.
 import sklearn
 from sklearn.impute import SimpleImputer
 
-#imp = SimpleImputer(missing_values='NaN', strategy='median')
 imp = SimpleImputer(missing_values=np.nan, strategy='median')
 
 X['fnlwgt'] = imp.fit_transform(X['fnlwgt'].values.reshape(-1,1))[:,0]
@@ -358,7 +317,7 @@ X['education_num'] = imp.fit_transform(X['education_num'].values.reshape(-1,1))[
 X['age'] = imp.fit_transform(X['age'].values.reshape(-1,1))[:,0]
 
 
-# In[23]:
+# In[21]:
 
 
 # And how much data is missing now? None.
@@ -388,7 +347,7 @@ X.isnull().sum(axis = 0).sort_values(ascending=False).head()
 #     - Tukey IQR.
 #     - Kernel density estimation.
 
-# In[24]:
+# In[22]:
 
 
 # This code does not work!
@@ -406,7 +365,7 @@ X.isnull().sum(axis = 0).sort_values(ascending=False).head()
 #         - Assumes normality.
 #         - Sensitive to extreme values.
 
-# In[25]:
+# In[23]:
 
 
 # This code does not work!
@@ -415,7 +374,7 @@ X.isnull().sum(axis = 0).sort_values(ascending=False).head()
 # Image(filename='tukeyipr.jpg')
 
 
-# In[26]:
+# In[24]:
 
 
 def find_outliers_tukey(x):
@@ -430,7 +389,7 @@ def find_outliers_tukey(x):
     return outlier_indices, outlier_values
 
 
-# In[27]:
+# In[25]:
 
 
 tukey_indices, tukey_values = find_outliers_tukey(X['age'])
@@ -439,10 +398,10 @@ print(np.sort(tukey_values))
 
 # __Outlier detection - kernel density estimation__
 # - Non-parametric way to estimate the probability density function of a given feature.
-# - Can be advantageous compared to exterem value detection (e.g. Tukey IQR).
+# - Can be advantageous compared to extreme value detection (e.g. Tukey IQR).
 #     - Captures outliers in bi-model distributions.
 
-# In[28]:
+# In[26]:
 
 
 from sklearn.preprocessing import scale
@@ -461,7 +420,7 @@ def find_outliers_kde(x):
     return outlier_ind, outlier_value
 
 
-# In[29]:
+# In[27]:
 
 
 
@@ -476,7 +435,7 @@ print(np.sort(kde_values))
 # - X-axis represents value bins and y-axis represents the frequency of an observations falling in that bin.
 # - It is interesting to look at distributions by outcome categories.
 
-# In[30]:
+# In[28]:
 
 
 # Use pyplot in matplotlib to plot histograms.
@@ -492,14 +451,14 @@ def plot_histogram(x):
     plt.show()
 
 
-# In[31]:
+# In[29]:
 
 
 plot_histogram(X['age'])
 print(type(X['age']))
 
 
-# In[32]:
+# In[30]:
 
 
 # Plot histograms to show distributions of features by 
@@ -515,7 +474,7 @@ def plot_histogram_dv(x, y):
     plt.show()
 
 
-# In[33]:
+# In[31]:
 
 
 plot_histogram_dv(X['age'], y)
@@ -547,7 +506,7 @@ plot_histogram_dv(X['age'], y)
 #     - It is recommended to understand your data and domain if possible, and selectively  \
 #     choosing interaction terms.
 
-# In[34]:
+# In[32]:
 
 
 # This code doesn't work.
@@ -555,7 +514,7 @@ plot_histogram_dv(X['age'], y)
 #Image(filename='interactions.jpg')
 
 
-# In[35]:
+# In[33]:
 
 
 # Use PolynomialFeatures in sklearn.preprocessing to create two-way interactions
@@ -581,7 +540,7 @@ def add_interactions(df):
     return df
 
 
-# In[36]:
+# In[34]:
 
 
 X = add_interactions(X)
@@ -601,7 +560,7 @@ print(X.head())
 #     in the dataset.
 # - Unfortunately PCA makes it a lot harder interpret models. 
 
-# In[37]:
+# In[35]:
 
 
 # This code does not work!
@@ -609,7 +568,7 @@ print(X.head())
 #Image(filename='pca.jpg')
 
 
-# In[38]:
+# In[36]:
 
 
 # Use PCA from sklearn.decomposition to find PCA.
@@ -619,7 +578,7 @@ pca = PCA(n_components=10)
 X_pca = pd.DataFrame(pca.fit_transform(X))
 
 
-# In[39]:
+# In[37]:
 
 
 print(X_pca.head())
@@ -630,7 +589,7 @@ print(X_pca.head())
 # __Build model using processed data__
 # 
 
-# In[40]:
+# In[38]:
 
 
 # Use train_test_spilt in sklearn.model_selection to split data into tain and test sets.
@@ -640,7 +599,7 @@ from sklearn.model_selection import train_test_split
 X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.7, random_state=1)
 
 
-# In[41]:
+# In[39]:
 
 
 # The total number of features has grown substantially after dummying and adding interaction terms.
@@ -649,7 +608,7 @@ print(df.shape)
 print(X.shape)
 
 
-# In[42]:
+# In[40]:
 
 
 # Such a large set of features can cause overfitting and slow computations.
@@ -666,13 +625,13 @@ X_train_selected = X_train[colnames_selected]
 X_test_selected = X_test[colnames_selected]
 
 
-# In[43]:
+# In[41]:
 
 
 print(colnames_selected)
 
 
-# In[44]:
+# In[42]:
 
 
 from sklearn.linear_model import LogisticRegression
@@ -688,7 +647,7 @@ def find_model_perf(X_train, y_train, X_test, y_test):
     return auc
 
 
-# In[45]:
+# In[43]:
 
 
 auc_processed = find_model_perf(X_train_selected, y_train, X_test_selected, y_test)
@@ -697,7 +656,7 @@ print(auc_processed)
 
 # __Build model using unprocessed data__
 
-# In[46]:
+# In[44]:
 
 
 # Drop missing values so that model does not throw an error.
@@ -707,7 +666,7 @@ print(df.shape)
 print(df_unprocessed.shape)
 
 
-# In[47]:
+# In[45]:
 
 
 # Remove non-numeric columns so model does not throw an error.
@@ -717,10 +676,9 @@ for col_name in df_unprocessed.columns:
         
 print(df.shape)
 print(df_unprocessed.shape)
-        
 
 
-# In[48]:
+# In[46]:
 
 
 # Split into features and outcomes.
@@ -728,14 +686,14 @@ X_unprocessed = df_unprocessed.drop('income', 1)
 y_unprocessed = df_unprocessed['income']
 
 
-# In[49]:
+# In[47]:
 
 
 # Take a look again at the what the unprocessed feature set looks like.
 print(X_unprocessed.head())
 
 
-# In[50]:
+# In[48]:
 
 
 # Split unprocessed data into train and test sets.
@@ -747,7 +705,7 @@ auc_unprocessed = find_model_perf(X_train_unprocessed, y_train, X_test_unprocess
 print(auc_unprocessed)
 
 
-# In[51]:
+# In[49]:
 
 
 # Compare model performance.
@@ -755,10 +713,4 @@ print('AUC of model with data preprocessing: {auc}'.format(auc=auc_processed))
 print('AUC of model without data preprocessing: {auc}'.format(auc=auc_unprocessed))
 per_improve = ((auc_processed-auc_unprocessed)/auc_unprocessed)*100 # Percentage improvement.
 print('Model improvement of preprocessing: {per_improve}%'. format(per_improve=per_improve))
-
-
-# In[ ]:
-
-
-
 
